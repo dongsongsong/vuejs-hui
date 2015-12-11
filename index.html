@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title>{{vm.dt}}</title>
+		<script src="./js/jquery-1.9.1.min.js"></script>
+		<script type="text/javascript" src="laypage-v1.3/laypage/laypage.js"></script>
+		<script src="./js/vue.js"></script>
+	</head>
+	<body>
+	<div id="list">
+		 <button @click="send">发送</button>
+		<p v-for="vo in lists">{{vo.i_name}}</p>
+	</div>
+	<div id="page3"></div>
+	</body>
+	<script>
+		var vm = new Vue({
+		  el: '#list',
+		  data: {
+		    lists: '',
+		  },
+		  methods: {
+		    send: function() {
+		      $.post('http://www.api.com/v0.1/plist',{user_id:'',name:'',channel_id:'',order:'',page:'',pagesize:'10'},function(dtt){
+		      	self = this;
+		      	this.lists = dtt.data;
+		      		laypage({
+					    cont: $('#page3'), //容器。值支持id名、原生dom对象，jquery对象,
+					    pages: 100, //总页数
+					    skip: true, //是否开启跳页
+					    skin: '#00AA91',
+					    groups: 3, //连续显示分页数
+					    jump: function(obj, first){
+					    	var p = obj.curr;
+					    	getlist(p);
+					    }
+					});
+		      });
+		    }
+		  }
+		});
+		function getlist(page){
+			    $.post('http://www.api.com/v0.1/plist',{user_id:'',name:'',channel_id:'',order:'',page:page,pagesize:'10'},function(dtt){
+			    vm.lists = dtt.data;
+			});
+		}
+	</script>
+</html>
