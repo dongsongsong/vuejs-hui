@@ -1,0 +1,7 @@
+@CHARSET "UTF-8";
+span.emotion{width:60px; height:20px; overflow:hidden; background:url(icon.gif) no-repeat 2px 2px; padding-left:20px; cursor:pointer;}
+span.emotion:hover{background-position:2px -28px;/*注意hover此属性在ie 6浏览器下是无效的*/}
+.qqFace{margin-top:4px;background:#fff;padding:2px;border:1px #dfe6f6 solid;}
+.qqFace table td{padding:0px;}
+.qqFace table td img{cursor:pointer;border:1px #fff solid;}
+.qqFace table td img:hover{border:1px #0066cc solid;}
