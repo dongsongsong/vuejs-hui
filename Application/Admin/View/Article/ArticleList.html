@@ -61,6 +61,13 @@
 <script type="text/javascript" src="__PUBLIC__/js/H-ui.admin.js"></script> 
 <script type="text/javascript" src="__PUBLIC__/js/H-ui.admin.doc.js"></script>
 <script type="text/javascript">
+var mode = new Vue({
+	el:'.pd-20',
+	data:{
+		list:'',
+		co:''
+	}
+});
 $('.table-sort').dataTable({
 	"lengthMenu":false,//显示数量选择 
 	"bFilter": false,//过滤功能
@@ -71,34 +78,33 @@ $('.table-sort').dataTable({
 	"aoColumnDefs": [
 	  //{"bVisible": false, "aTargets": [ 3 ]} //控制列的隐藏显示
 	  {"orderable":false,"aTargets":[0,2,3,8]}// 制定列不参与排序
-	]
-});
-var mode = new Vue({
-	el:'.pd-20',
-	data:{
-		list:'',
-		co:''
-	}
-});
-$.getJSON("{:('ajaxList')}", {p: 1}, function(res){
-	mode.list = res.list;
-	mode.co = res.count;
+	],
+	"serverSide": true,
+	  "ajax": {
+    "url": "ajaxList?p=1",
+    "dataSrc": function ( hh ) {
+    mode.list = hh.list;
+		mode.co = hh.count;
     laypage({
-    cont: $('#pageNav'),
-    pages: res.page, //总页数
-    skip: true, //是否开启跳页
-    skin: '#5eb95e',
-    groups: 3,//连续显示分页数
-    jump: function(obj, first){
-    	if(!first){
-    	var curr = obj.curr;
-    	$.getJSON("{:('ajaxList')}", {p: curr}, function(r){
-    		mode.list = r.list;
-    	});
-    	}
-    }
+			    cont: $('#pageNav'),
+			    pages: hh.page, //总页数
+			    skip: true, //是否开启跳页
+			    skin: '#5eb95e',
+			    groups: 3,//连续显示分页数
+			    jump: function(obj, first){
+			    	if(!first){
+			    	var curr = obj.curr;
+			    	$.getJSON("{:('ajaxList')}", {p: curr}, function(r){
+			    		mode.list = r.list;
+			    	});
+			    	}
+			    }
+			});
+}
+   }
 });
-});
+
+
 </script>
 </body>
 </html>

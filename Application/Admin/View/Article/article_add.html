@@ -4,7 +4,7 @@
 		<meta charset="utf-8">
 		<title>添加资讯</title>
 		<script type="text/javascript" src="__PUBLIC__/lib/jquery.min.js"></script>
-		<script type="text/javascript" src="__PUBLIC__/lib/layer1.8/layer.min.js"></script>
+		<script type="text/javascript" src="__PUBLIC__/layer/layer.js"></script>
 		<script type="text/javascript" src="__PUBLIC__/js/H-ui.js"></script>
 		<script type="text/javascript" src="__PUBLIC__/lib/WebUploader/js/webuploader.js"></script>
 		<script type="text/javascript" src="__PUBLIC__/lib/WebUploader/js/upload.js"></script>
@@ -16,7 +16,7 @@
           <div class="row cl">
             <label class="form-label col-2">标题：</label>
             <div class="formControls col-10">
-              <input type="text" class="input-text" id="title" name="title" autocomplete="off" placeholder="标题">
+              <input type="text" datatype="s5-16" errormsg="标题至少5个字符,最多16个字符！"  class="input-text" id="title" name="title" autocomplete="off" placeholder="标题">
             </div>
           </div>
            <div class="row cl">
@@ -24,7 +24,7 @@
             <div class="formControls col-10">
             	<img src="" id="im" style="width:100px;height:100px;display: none;"/>
             	<div id="btn">选择图片</div>
-              <input type="hidden" class="input-text" id="img" name="img">
+              <input type="hidden" class="input-text" id="img" name="img" value="">
             </div>
           </div>
           <div class="row cl">
@@ -45,17 +45,12 @@
           </div>
           <div class="row cl">
             <div class="col-10 col-offset-2">
-              <input class="btn btn-primary radius" type="button" value="提交">
+              <input class="btn btn-primary radius" type="button" onclick="check()" value="提交">
             </div>
           </div>
         </form>
 	</body>
 	<script>
-		var title = $.trim($("#title").val());
-		var type = $("#type").val();
-		var img = $("#img").val();
-		var content = $("#content").val();
-		
 		// 初始化Web Uploader
 		var BASE_URL = "";
 		var uploader = WebUploader.create({
@@ -82,6 +77,20 @@
 		uploader.on( 'uploadSuccess', function(file,response) {
 			$("#im").attr("src",url+response._raw);
 			$("#im").show();
+			$("#img").val(response._raw);
 		});
+
+		var title = $.trim($("#title").val());
+		var type = $("#type").val();
+		var img = $("#img").val();
+		var content = $("#content").val();
+		function check(){
+			if(title==""){
+				layer.msg('请输入内容', {shift: 6});
+				$("#title").focus();
+				return;
+			}
+		}
+		
 	</script>
 </html>
